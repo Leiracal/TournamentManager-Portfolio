@@ -1,0 +1,121 @@
+﻿@model TournamentManager.Models.Tournament
+
+@{
+    ViewData["Title"] = "Edit Tournament";
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
+    bool isAdmin = User.IsInRole("Admin");
+    bool isOrganizer = Model.OrganizerId == currentUserId;
+}
+
+<h2>Edit Tournament - @Model.TournamentName</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<form asp-action="Edit" method="post" class="mb-4">
+    <input type="hidden" asp-for="TournamentId" />
+    <div class="mb-3">
+        <label asp-for="TournamentName" class="form-label"></label>
+        <input asp-for="TournamentName" class="form-control" />
+        <span asp-validation-for="TournamentName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Format" class="form-label"></label>
+        <input asp-for="Format" class="form-control" />
+        <span asp-validation-for="Format" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="RegistrationClosesAt" class="form-label"></label>
+        <input asp-for="RegistrationClosesAt" class="form-control" type="datetime-local" />
+        <span asp-validation-for="RegistrationClosesAt" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Tournament Info</button>
+</form>
+
+<hr />
+@if (isOrganizer || isAdmin)
+{
+    <h3>Add Player</h3>
+    <form asp-action="AddPlayer" asp-route-tournamentId="@Model.TournamentId" method="post">
+        @Html.AntiForgeryToken()
+        <div class="input-group mb-3">
+            <select name="playerId" class="form-select">
+                <option value="">-- Select a user --</option>
+                @foreach (var user in ViewBag.AllUsers as List<ApplicationUser>)
+                {
+                    if (!Model.Players.Any(p => p.PlayerId == user.Id))
+                    {
+                        <option value="@user.Id">@user.UserName</option>
+                    }
+                }
+            </select>
+            <button class="btn btn-success" type="submit">Add Player</button>
+        </div>
+    </form>
+}
+<hr />
+
+<h3>Registered Players</h3>
+<ul class="list-group mb-3">
+    @foreach (var player in Model.Players)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            @(player.Player?.UserName ?? "Unknown")
+            @if (isOrganizer || isAdmin)
+            {
+                <form asp-action="RemovePlayer" asp-route-tournamentId="@Model.TournamentId" asp-route-playerId="@player.PlayerId" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                </form>
+            }
+        </li>
+    }
+    @if (!Model.Players.Any())
+    {
+        <li class="list-group-item text-muted">No players registered yet.</li>
+    }
+</ul>
+
+<hr />
+
+<h3>Tournament Summary</h3>
+<dl class="row">
+    <dt class="col-sm-3">Organizer</dt>
+    <dd class="col-sm-9">@(Model.Organizer?.UserName ?? "Unknown")</dd>
+
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9">@Model.Status</dd>
+
+    <dt class="col-sm-3">Registered Players</dt>
+    <dd class="col-sm-9">@Model.Players.Count</dd>
+
+    <dt class="col-sm-3">Registration Closes</dt>
+    <dd class="col-sm-9">@(Model.RegistrationClosesAt?.ToString("g") ?? "No date set")</dd>
+</dl>
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+    @if ((User.IsInRole("Organizer") || User.IsInRole("Admin")) && Model.Status == TournamentManager.Models.TournamentStatus.Closed)
+    {
+        <form asp-action="GenerateBracket" asp-controller="Match" asp-route-tournamentId="@Model.TournamentId" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-primary">Generate Bracket</button>
+        </form>
+    }
+
+    @if ((User.IsInRole("Organizer") || User.IsInRole("Admin")) &&
+        (Model.Status == TournamentManager.Models.TournamentStatus.InProgress ||
+        Model.Status == TournamentManager.Models.TournamentStatus.Completed))
+    {
+        <a asp-controller="Match" asp-action="ViewBracket" asp-route-id="@Model.TournamentId" class="btn btn-outline-info ms-2">View Bracket</a>
+    }
+</div>
+

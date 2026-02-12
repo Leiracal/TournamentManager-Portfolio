@@ -1,0 +1,60 @@
+﻿@model List<TournamentManager.ViewModels.AdminManagesRoleViewModel>
+
+@{
+    ViewData["Title"] = "Restore Deleted User by Admin";
+}
+
+<div class="text-center">
+    <h1 class="display-4 page-title-highlight mb-2">Restore Deleted User by Admin</h1><br>
+    <h4 class="mb-5">
+        Admin can see the user accounts that have been soft-deleted.<br>
+        If Admin chooses to restore a user, please proceed with caution.
+    </h4><br>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-dange">@TempData["ErrorMessage"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <a class="btn btn-primary mb-5" asp-area="" asp-controller="Admin" asp-action="Index">Admin Index</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>Requested Role</th>
+                <th>Current Role</th>
+                <th>Restore User</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userWithRoles in Model)
+            {
+                <tr>
+                    <td>@userWithRoles.User.FirstName</td>
+                    <td>@userWithRoles.User.LastName</td>
+                    <td>@userWithRoles.User.Email</td>
+                    <td>@userWithRoles.User.DisplayName</td>
+                    <td>@userWithRoles.RequestedRole</td>
+                    <td>@string.Join(", ", userWithRoles.Roles)</td>
+                    <td>
+                        <form asp-action="RestoreUser" asp-route-id="@userWithRoles.User.Id" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-success"
+                                    onclick="return confirm('Are you sure you want to restore this user account?');">
+                                Restore User
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

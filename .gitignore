@@ -1,0 +1,21 @@
+# This file is added so that VS2022 push won't send unnecessary personal cashe files to main git repo.
+
+# Visual Studio cache
+.vs/
+
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.rsuser
+*.editor
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Local database files
+*.dbmdl

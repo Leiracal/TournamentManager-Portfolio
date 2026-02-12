@@ -1,0 +1,75 @@
+﻿@model TournamentManager.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4 page-title-highlight">Login Page</h1>
+    <br><br>
+
+    @* This success message shows 
+    if user visits this page after the successful registration submit. *@
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible text-left mb-3" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible text-left mb-3" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="alert alert-info text-left">
+        <h3>
+            Not a Member of Our League?
+        </h3>
+        <h5>
+            Click the "Register Now!" button to join!
+        </h5>
+        <a class="btn btn-success" asp-controller="Account" asp-action="Register">Register Now!</a>
+    </div><br>
+
+    @* Applied Bootstrap grid wrapper to center and size the form input nicely. *@
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 text-left">
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div><br>
+                <div style="text-align: left;">
+                    <div class="form-group form-check">
+                        <input asp-for="RememberMe" class="form-check-input" />
+                        <label asp-for="RememberMe" class="form-check-label">Remember Me</label>
+                    </div>
+                    <p>
+                        <i>*Leave unchecked to be signed out automatically when the browser closes.</i><br>
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

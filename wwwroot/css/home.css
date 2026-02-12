@@ -1,0 +1,71 @@
+﻿/* Hero Title (Navy + Gold) */
+.tm-hero-title {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+    .tm-hero-title h1 {
+        font-weight: 800;
+        font-size: 3rem;
+        letter-spacing: 1px;
+        margin: 0 auto;
+        text-transform: uppercase;
+        color: #0a1a3c; /* deep navy */
+        border-bottom: 4px solid #d1b354; /* gold underline */
+        padding-bottom: 6px;
+        display: inline-block;
+    }
+
+@media (max-width: 768px) {
+    .tm-hero-title h1 {
+        font-size: 2.2rem;
+    }
+}
+
+/* Recent Champions Header */
+.recent-champs-header {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0a1a3c; /* navy */
+    border-bottom: 4px solid #d1b354; /* gold underline */
+    display: inline-block;
+    padding-bottom: 6px;
+}
+
+/* Champions List Wrapper */
+.recent-champs-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+/* Clean Champion Card */
+.champ-card-simple {
+    text-align: center;
+    border: 2px solid #d1b354;
+    padding: 12px 18px;
+    min-width: 220px;
+    background: #f7f4e8; /* subtle parchment tone for gold balance */
+    border-radius: 8px;
+}
+
+    /* Champion Name */
+    .champ-card-simple .champ-name {
+        color: #0a1a3c; /* navy */
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    /* Tournament Label */
+    .champ-card-simple .champ-tourney {
+        color: #0a1a3c;
+        font-weight: 500;
+        margin: 0;
+    }

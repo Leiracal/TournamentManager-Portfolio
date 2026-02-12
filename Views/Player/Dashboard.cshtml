@@ -1,0 +1,39 @@
+﻿@model TournamentManager.ViewModels.PlayerEloDashboardViewModel
+
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+<div class="text-center">
+    <h2 class="display-4 page-title-highlight">@Model.DisplayName's Dashboard</h2>
+    <br />
+</div>
+
+<h2>@Model.DisplayName's Rating</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h3 class="mb-0">@Model.CurrentElo</h3>
+    </div>
+</div>
+
+<h3>Rating History</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Old</th>
+            <th>New</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var h in Model.History)
+        {
+            <tr>
+                <td>@h.MatchDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@h.OldRating</td>
+                <td>@h.NewRating</td>
+            </tr>
+        }
+    </tbody>
+</table>

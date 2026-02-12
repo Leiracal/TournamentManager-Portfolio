@@ -1,0 +1,47 @@
+﻿@model List<TournamentManager.ViewModels.AdminManagesRoleViewModel>
+
+@{
+    ViewData["Title"] = "Pending Role Requests for Admin";
+}
+<div class="text-center">
+    <h1 class="display-4 page-title-highlight">Pending Role Requests for Admin</h1><br>
+    <p>
+        This is the Admin page that displays all users who requested Referee or Organizer role.
+    </p>
+    <h4 class="mb-5">
+        If you see a list below, that means some users are waiting for Admin to change the role.<br><br>
+        Please click Edit User button and assign appropriate role.
+    </h4><br>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>Requested Role</th>
+                <th>Current Role</th>
+                <th>Edit User</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.User.FirstName</td>
+                    <td>@item.User.LastName</td>
+                    <td>@item.User.Email</td>
+                    <td>@item.User.DisplayName</td>
+                    <td>@item.User.RequestedRole</td>
+                    <td>@string.Join(", ", item.Roles)</td>
+                    <td>
+                        <a asp-action="EditUser" asp-route-id="@item.User.Id" class="btn btn-sm btn-primary">
+                            Edit User
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

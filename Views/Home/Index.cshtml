@@ -1,0 +1,63 @@
+﻿@model TournamentManager.ViewModels.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<link rel="stylesheet" href="~/css/home.css" />
+<link rel="stylesheet" href="~/css/bracket.css" />
+
+<div class="text-center">
+    <div class="tm-hero-title"><h1>Tournament Manager</h1></div>
+    <br />
+    <h3>Welcome to the Tournament Manager Site!</h3><br />
+    <h4>
+        We are a league of tournament Organizers, Referees and Players<br />
+        who enjoy competing in various types of games.
+    </h4>
+    <h5>Click the Tournaments button above to see a listing of competitions.</h5>
+</div>
+
+<hr />
+
+@if (Model.Champions != null && Model.Champions.Any())
+{
+    <h2 class="recent-champs-header">Recent Champions</h2>
+
+    <div class="recent-champs-list">
+        @foreach (var champ in Model.Champions)
+        {
+            <div class="champ-card-simple">
+                <h3 class="champ-name">@champ.WinnerName</h3>
+                <p class="champ-tourney"><strong>@champ.TournamentName</strong></p>
+            </div>
+        }
+    </div>
+}
+
+
+
+@if (Model.ActiveTournament != null)
+{
+    <h3>Ongoing Tournament</h3>
+    <div class="mb-4">
+        <strong>@Model.ActiveTournament.TournamentName</strong><br />
+
+        @if (Model.ActiveBracket != null)
+        {
+            <h2 class="mt-5">Bracket</h2>
+            <partial name="~/Views/Shared/_BracketPreview.cshtml" model="Model.ActiveBracket" />
+        }
+    </div>
+}   
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="text-center mt-5">
+        <h3>Log In Now!</h3>
+        <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Login!</a>
+        <br /><br />
+        <h3>Not a Member Yet?</h3>
+        <h5>Click the "Register Now!" button to join!</h5>
+        <a class="btn btn-success" asp-controller="Account" asp-action="Register">Register Now!</a>
+    </div>
+}

@@ -1,0 +1,43 @@
+﻿@model TournamentManager.Models.Tournament
+
+@{
+    ViewData["Title"] = "Create Tournament";
+}
+
+<div class="container mt-4">
+    <h2>Create Tournament</h2>
+
+    <form asp-action="Create" method="post" class="card shadow-sm p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="TournamentName" class="form-label"></label>
+            <input asp-for="TournamentName" class="form-control" />
+            <span asp-validation-for="TournamentName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TournamentDate" class="form-label"></label>
+            <input asp-for="TournamentDate" class="form-control" type="date" />
+            <span asp-validation-for="TournamentDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Format" class="form-label"></label>
+            <select asp-for="Format" class="form-select">
+                <option value="SingleElimination">Single Elimination</option>
+                <option value="DoubleElimination">Double Elimination</option>
+                <option value="RoundRobin">Round Robin</option>
+            </select>
+            <span asp-validation-for="Format" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="RegistrationClosesAt" class="form-label">Registration Closes</label>
+            <input asp-for="RegistrationClosesAt" class="form-control" type="datetime-local" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Create Players for Admin";
+}
+
+<div class="text-center">
+    <h1 class="display-4 page-title-highlight">Create Players for Admin</h1>
+
+    <h2 class="mb-5">
+        @Html.Raw(ViewData["Message"])
+    </h2>
+    <a class="btn btn-primary" asp-area="" asp-controller="Admin" asp-action="Index">Admin Index</a>
+</div>
+<br />
+<div style="display: flex">
+    <div style="text-align: left; width: 400px; padding: 20px">
+        <h4>
+            Default account credentials
+        </h4>
+        <ul>
+            <li>
+                <b>Admin Role -</b><br />
+                Email: admin@example.com<br />
+                Password: 123qwe!QWE<br /><br />
+            </li>
+            <li>
+                <b>Organizer Role -</b><br />
+                Email: organizer@example.com<br />
+                Password: 123qwe!QWE<br /><br />
+            </li>
+            <li>
+                <b>Referee Role -</b><br />
+                Email: referee@example.com<br />
+                Password: 123qwe!QWE<br /><br />
+            </li>
+        </ul>
+    </div>
+    <div style="text-align: left; width:400px; padding: 20px">
+        <h4>
+            Credentials for Default Players created
+        </h4>
+        <h6>
+            <u>*Password for all default Players:</u>
+            <b><i> 123qwe!QWE</i></b>
+        </h6>
+        <h6 class="mb-3"> <b>A couple of examples of default Email addresses:</b></h6>
+
+        <ol>
+            <li>
+                ava.nguyen@example.com
+            </li>
+            <li>
+                mia.sato@example.com
+            </li>
+
+            @* The emails below are not used anymore if you do drop-database and update-database due to the 
+    new SeedUserService.cs CreatePlayers() code creates default 16 new users 
+    instead of the below teacher's name Player role users.
+
+            <li>
+                beth@example.com
+            </li>
+            <li>
+                fred@example.com
+            </li>
+            <li>
+                glenn@example.com
+            </li>
+            <li>
+                jo@example.com
+            </li>
+            <li>
+                julie@example.com
+            </li>
+            <li>
+                kim@example.com
+            </li>
+            <li>
+                kristina@example.com
+            </li>
+            <li>
+                regplayer@example.com
+            </li> 
+*@
+
+        </ol>
+        <p>
+            <b>Note to Professor Ray:</b>
+            16 default players have already been created for the tournament demo.<br>
+            To test the Edit or Deactivate features, please create a new user using the Registration Form and then use that player.
+            Thank you very much.
+        </p>
+    </div>
+</div>

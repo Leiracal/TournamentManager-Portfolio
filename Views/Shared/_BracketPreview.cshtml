@@ -1,0 +1,32 @@
+﻿@model TournamentManager.ViewModels.BracketViewModel
+
+<link rel="stylesheet" href="~/css/bracket.css" />
+
+<main id="tournament" class="bracket-preview">
+    @foreach (var round in Model.Rounds.OrderBy(r => r.Key))
+    {
+        <ul class="round round-@round.Key">
+            <li class="spacer">&nbsp;</li>
+            @foreach (var match in round.Value)
+            {
+                <li class="game game-top @(match.WinnerId == match.PlayerAId ? "winner" : "")">
+                    @(match.PlayerA?.NameToShow ?? "BYE")
+                </li>
+                <li class="game-spacer">&nbsp;</li>
+                <li class="game game-bottom @(match.WinnerId == match.PlayerBId ? "winner" : "")">
+                    @(match.PlayerB?.NameToShow ?? "BYE")
+                </li>
+                <li class="spacer">&nbsp;</li>
+            }
+        </ul>
+    }
+</main>
+
+<div class="text-center mt-2">
+    <a asp-controller="Match"
+       asp-action="ViewBracket"
+       asp-route-id="@Model.Tournament.TournamentId"
+       class="btn btn-outline-info btn-sm">
+        Live Updates →
+    </a>
+</div>

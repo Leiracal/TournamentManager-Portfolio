@@ -1,0 +1,75 @@
+﻿/* Bracket CSS adapted from a template by Aron Druby: https://codepen.io/aronduby/pen/DRJrJN */
+
+/* Flex Layout */
+main#tournament {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+    main#tournament .round {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 200px;
+        list-style: none;
+        padding: 0;
+    }
+
+        main#tournament .round .spacer {
+            flex-grow: 1;
+        }
+
+            main#tournament .round .spacer:first-child,
+            main#tournament .round .spacer:last-child {
+                flex-grow: 0.5;
+            }
+
+        main#tournament .round .game-spacer {
+            flex-grow: 1;
+            min-height: 40px;
+            border-right: 1px solid #aaa;
+        }
+
+/* Game Styles */
+li.game {
+    padding-left: 10px;
+    position: relative;
+}
+
+    li.game.winner {
+        font-weight: bold;
+    }
+
+li.game-top {
+    border-bottom: 1px solid #aaa;
+}
+
+li.game-bottom {
+    border-top: 1px solid #aaa;
+}
+
+li.game span {
+    float: right;
+    margin-right: 5px;
+}
+
+/* General */
+body {
+    font-family: sans-serif;
+    font-size: small;
+    padding: 10px;
+    line-height: 1.4em;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    main#tournament {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+        main#tournament .round {
+            width: 100%;
+        }
+}

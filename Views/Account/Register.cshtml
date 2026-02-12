@@ -1,0 +1,96 @@
+﻿@model TournamentManager.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registration Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4 page-title-highlight">New Account Registration Page</h1>
+    <br><br>
+</div>
+<div class="row">
+    <div class="col-md-4 alert alert-info text-left" style="padding: 30px; align-content:center;">
+        <section>
+
+            <h2>Join our League!</h2>
+            <br />
+            <h5 style="text-align: left">
+                <u><strong>New Player</strong>:</u><br />
+            </h5>
+            <h6>
+                <strong>Choose a unique Display Name</strong> to be used for tournament registrations and brackets viewed by others on the site.
+                <br />Player role is pre-selected and assigned by default.<br />
+            </h6>
+            <br />
+            <h5>
+                <u><strong>New Organizer or Referee</strong>:<br></u>
+            </h5>
+            <h6>
+                Please specify using the <strong>Requested Role</strong> drop-down menu.<br />
+                <i>
+                    <br />*Requests for Organizer and Referee roles must be reviewed and approved by a site administrator.<br />
+                    You will have the default Player role until approved.
+                </i><br />
+            </h6>
+            <br />
+            <h5>
+        </section>
+    </div>
+    <div class="col-md-8 col-md-offset-2" style="padding: 30px">
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ConfirmPassword">Confirm Password</label>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FirstName">First Name</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName">Last Name</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DisplayName">Display Name (optional)</label>
+                <input asp-for="DisplayName" class="form-control" />
+                <span asp-validation-for="DisplayName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RequestedRole">Requested Role</label>
+                <select asp-for="RequestedRole" class="form-control">
+                    <option value="Player">Player</option>
+                    <option value="Referee">Referee</option>
+                    <option value="Organizer">Organizer</option>
+                </select>
+                <span asp-validation-for="RequestedRole" class="text-danger"></span>
+            </div><br><br>
+
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

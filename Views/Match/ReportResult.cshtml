@@ -1,0 +1,76 @@
+﻿@model TournamentManager.Models.Match
+
+@{
+    ViewData["Title"] = "Report Match Result";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3 text-center">Report Match Result</h2>
+
+    <div class="card shadow-sm p-4">
+        <div class="mb-3">
+            <strong>Tournament:</strong> @Model.Tournament?.TournamentName ?? $"ID #{Model.TournamentId}"<br />
+            <strong>Round:</strong> @Model.Round
+        </div>
+
+        @if (Model.PlayerAId == null && Model.PlayerBId == null)
+        {
+            <div class="alert alert-warning">
+                This match has no assigned players and cannot be reported.
+            </div>
+        }
+        else
+        {
+            <form asp-action="ReportResult" asp-route-matchId="@Model.MatchId" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Select Winner</label>
+
+                    @if (Model.PlayerAId != null)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="winnerId"
+                                   id="winnerA" value="@Model.PlayerAId" required />
+                            <label class="form-check-label" for="winnerA">
+                                @Model.PlayerA?.NameToShow ?? "Unknown Player (A)"
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.PlayerBId != null)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="winnerId"
+                                   id="winnerB" value="@Model.PlayerBId" required />
+                            <label class="form-check-label" for="winnerB">
+                                @Model.PlayerB?.NameToShow ?? "Unknown Player (B)"
+                            </label>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mt-2">(Player B received a bye)</p>
+                    }
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="ViewBracket" asp-route-id="@Model.TournamentId" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Submit Result
+                    </button>
+                </div>
+            </form>
+        }
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mt-3">@TempData["Success"]</div>
+    }
+</div>

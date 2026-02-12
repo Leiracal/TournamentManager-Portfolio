@@ -1,0 +1,118 @@
+﻿@model BracketViewModel
+
+@{
+    ViewData["Title"] = "Bracket";
+    var tournament = Model.Tournament;
+    string currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
+    bool isAdmin = Model.IsAdmin;
+    bool isOrganizer = Model.IsOrganizer;
+    var rounds = Model.Rounds.OrderBy(r => r.Key).ToList();
+}
+
+<link rel="stylesheet" href="~/css/bracket.css" />
+
+<h1>@tournament.TournamentName</h1>
+
+@if (!rounds.Any())
+{
+    <div class="alert alert-info mt-3">
+        Bracket has not been generated yet.
+        @if (isAdmin || isOrganizer)
+        {
+            <form asp-controller="Match" asp-action="GenerateBracket" method="post" class="d-inline-block ms-2">
+                <input type="hidden" name="tournamentId" value="@tournament.TournamentId" />
+                <button type="submit" class="btn btn-primary btn-sm">Generate Bracket</button>
+            </form>
+        }
+    </div>
+    return;
+}
+
+<main id="tournament">
+    @foreach (var round in rounds)
+    {
+        <ul class="round round-@round.Key">
+            <li class="spacer">&nbsp;</li>
+
+            @for (int i = 0; i < round.Value.Count; i++)
+            {
+                var match = round.Value[i];
+
+                //
+                // Names for top/bottom slots
+                //
+                string topName =
+                match.PlayerA != null
+                ? (match.PlayerA.NameToShow ?? match.PlayerA.UserName)
+                : (round.Key == 1 ? "BYE" : "TBD");
+
+                string bottomName =
+                match.PlayerB != null
+                ? (match.PlayerB.NameToShow ?? match.PlayerB.UserName)
+                : (round.Key == 1 ? "BYE" : "TBD");
+
+                <li class="game game-top @(match.WinnerId == match.PlayerAId ? "winner" : "")">
+                    @topName
+
+                    @* Winner button for Player A *@
+                    @if ((isAdmin || isOrganizer || User.IsInRole("Referee"))
+                                && string.IsNullOrEmpty(match.WinnerId)
+                                && match.PlayerAId != null)
+                    {
+                        <form asp-controller="Match" asp-action="ReportResult"
+                              asp-route-matchId="@match.MatchId"
+                              method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="winnerId" value="@match.PlayerAId" />
+                            <button type="submit" class="btn btn-sm btn-outline-success ms-2">Winner</button>
+                        </form>
+                    }
+                </li>
+
+                <li class="game-spacer">&nbsp;</li>
+
+                <li class="game game-bottom @(match.WinnerId == match.PlayerBId ? "winner" : "")">
+                    @bottomName
+
+                    @* Winner button for Player B *@
+                    @if ((isAdmin || isOrganizer || User.IsInRole("Referee"))
+                                && string.IsNullOrEmpty(match.WinnerId)
+                                && match.PlayerBId != null)
+                    {
+                        <form asp-controller="Match" asp-action="ReportResult"
+                              asp-route-matchId="@match.MatchId"
+                              method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="winnerId" value="@match.PlayerBId" />
+                            <button type="submit" class="btn btn-sm btn-outline-success ms-2">Winner</button>
+                        </form>
+                    }
+                </li>
+
+                <li class="spacer">&nbsp;</li>
+            }
+        </ul>
+    }
+
+    <!-- Final Winner Column -->
+    @{
+        var finalRound = rounds.Any() ? rounds.Last().Value : new List<Match>();
+        var finalMatch = finalRound.FirstOrDefault();
+        string winnerName = "TBD";
+
+        if (finalMatch?.Winner != null)
+        {
+            winnerName = finalMatch.Winner.NameToShow ?? finalMatch.Winner.UserName;
+        }
+    }
+
+    <ul class="round round-winner">
+        <li class="spacer">&nbsp;</li>
+        <li class="game game-top winner">@winnerName</li>
+        <li class="spacer">&nbsp;</li>
+    </ul>
+</main>
+
+<div class="mt-4">
+    <a asp-controller="Tournament" asp-action="Index" class="btn btn-secondary">Back to Tournament List</a>
+</div>

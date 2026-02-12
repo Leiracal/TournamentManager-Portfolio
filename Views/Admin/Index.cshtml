@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Admin Index";
+}
+
+<div class="text-center">
+    <h1 class="display-4 page-title-highlight">Admin Index</h1>
+    <br />
+    <h4>Main page for Admin users upon login.</h4>
+    <p>(admin view)</p>
+
+    <a class="btn btn-primary" asp-area="" asp-controller="Admin" asp-action="AllUsers">View All Users</a>
+    <a class="btn btn-success" asp-area="" asp-controller="Admin" asp-action="PendingRequests">Check Pending Role Requests</a>
+
+</div>

@@ -1,0 +1,127 @@
+﻿@model TournamentManager.Models.Tournament
+
+@{
+    ViewData["Title"] = "Tournament Details";
+}
+
+<div class="container mt-4">
+    <h2>@Model.TournamentName</h2>
+    <p class="text-muted">@Model.Format | @Model.TournamentDate.ToString("MMM dd, yyyy")</p>
+    <div class="mb-3">
+        @if (Model.IsRegistrationOpen && User.IsInRole("Player"))
+        {
+            <form asp-action="Register" asp-route-tournamentId="@Model.TournamentId" method="post">
+                <button type="submit" class="btn btn-success">Register to Play</button>
+            </form>
+        }
+        else if (!Model.IsRegistrationOpen)
+        {
+            <span class="badge bg-secondary">Registration Closed</span>
+        }
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="card shadow-sm p-4 mb-4">
+        <dl class="row">
+            <dt class="col-sm-3">Organizer</dt>
+            <dd class="col-sm-9">@(Model.Organizer?.UserName ?? "Unknown")</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">@Model.Status</dd>
+
+            <dt class="col-sm-3">Registration Closes</dt>
+            <dd class="col-sm-9">
+                @(Model.RegistrationClosesAt?.ToString("g") ?? "No date set")
+            </dd>
+
+            <dt class="col-sm-3">Registered Players</dt>
+            <dd class="col-sm-9">@Model.Players.Count</dd>
+        </dl>
+    </div>
+
+    <div class="mb-3">
+        <ul class="nav-bar nav">
+            @if (User.IsInRole("Organizer") || User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    @if (Model.Status == TournamentManager.Models.TournamentStatus.Closed)
+                    {
+                        <form asp-action="GenerateBracket"
+                              asp-controller="Match"
+                              asp-route-tournamentId="@Model.TournamentId"
+                              method="post">
+                            <button type="submit" class="btn btn-primary">Generate Bracket</button>
+                        </form>
+                    }
+                    else if (Model.Status == TournamentManager.Models.TournamentStatus.InProgress ||
+                    Model.Status == TournamentManager.Models.TournamentStatus.Completed)
+                    {
+                        <a asp-controller="Match"
+                           asp-action="ViewBracket"
+                           asp-route-id="@Model.TournamentId"
+                           class="btn btn-outline-info">View Bracket</a>
+                    }
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Edit" asp-route-id="@Model.TournamentId" class="btn btn-warning ms-2">Edit Tournament</a>
+                </li>
+            }
+        </ul>
+        @if (User.IsInRole("Player") || !User.Identity.IsAuthenticated)
+        {
+            <li class="nav-item">
+            @if (Model.Status == TournamentManager.Models.TournamentStatus.Closed)
+            {
+                <button type="button" disabled class="btn btn-outline-dark">Bracket Not Available</button>
+            }
+            else if (Model.Status == TournamentManager.Models.TournamentStatus.InProgress ||
+            Model.Status == TournamentManager.Models.TournamentStatus.Completed)
+            {
+                <a asp-controller="Match"
+                   asp-action="ViewBracket"
+                   asp-route-id="@Model.TournamentId"
+                   class="btn btn-sm btn-outline-info">View Bracket</a>
+            }
+            </li>
+        }
+        </ul>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            Registered Players
+        </div>
+        <ul class="list-group list-group-flush">
+            @if (!Model.Players.Any())
+            {
+                <li class="list-group-item text-muted">No players registered yet.</li>
+            }
+            else
+            {
+                @foreach (var p in Model.Players)
+                {
+                    <li class="list-group-item">
+                        @(p.Player?.UserName ?? "unknown player")
+                        @if (p.Seed.HasValue)
+                        {
+                            <span class="text-muted">— Seed @p.Seed</span>
+                        }
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

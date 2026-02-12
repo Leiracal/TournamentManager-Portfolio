@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Deactivate Account";
+}
+
+<div class="text-center">
+    <h1 class="display-4 page-title-highlight mb-2">Deactivate Account</h1><br>
+    <h4 class="mb-5">
+        Caution! Are you sure you want to deactivate your account? <br><br>
+        You will be signed out immediately and lose access to this application.<br>
+        You cannot use the same Email address when you re-register.
+    </h4>
+
+    <h5 class="lightblue-highlight mb-5">
+        Message to Professor Ray: <br>
+        Please try this 'Deactivate My Account' feature with a user you created through Register page.<br>
+        Please avoid deleting seeded data users such as Admin, since it may be used for the other parts of the demo. Thank you.
+    </h5>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-dange mb-3">@TempData["ErrorMessage"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mb-3">@TempData["SuccessMessage"]</div>
+    }
+
+    <form asp-action="SoftDeleteOwnAccount" asp-controller="Account" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">
+            Deactivate My Account
+        </button>
+    </form>
+</div>

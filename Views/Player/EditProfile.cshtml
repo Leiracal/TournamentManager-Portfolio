@@ -1,0 +1,48 @@
+﻿@model TournamentManager.ViewModels.EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="text-center">
+    <h2 class="display-4 page-title-highlight">Edit Profile Page</h2>
+    <br />
+    <h4>This is Edit Player Profile Page for Display Name: @Model.NameToShow.</h4>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 text-left">
+            <form asp-controller="Player" asp-action="EditProfile" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label asp-for="DisplayName">Display Name</label>
+                    <input asp-for="DisplayName" class="form-control" />
+                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Bio"></label>
+                    <textarea asp-for="Bio" class="form-control"></textarea>
+                    <span asp-validation-for="Bio" class="text-danger"></span>
+                </div><br /><br />
+
+                @*  ELO is not editable by Players by themselves. *@
+
+                <p>ELO is system-calculated and updated after matches. ELO can not be edited by players.</p>
+
+                <div class="form-group">
+                    <label asp-for="ELO"></label>
+                    <input asp-for="ELO" class="form-control" readonly />
+
+                    @* <span asp-validation-for="ELO" class="text-danger"></span> *@
+                    @* If we decide to ELO to be editable by the Player self, then uncomment this validation code. Right now, it is not read-only. *@
+
+                </div><br /><br />
+
+                <button type="submit" class="btn btn-primary">Save Profile Change</button>
+                <a asp-action="Profile" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

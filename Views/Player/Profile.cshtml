@@ -1,0 +1,23 @@
+﻿@model TournamentManager.ViewModels.EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Player Profile";
+}
+
+<div class="text-center">
+    <h2 class="display-4 page-title-highlight">Profile Page</h2>
+    <br />
+    <h4>This is Player Profile Page for : @Model.NameToShow.</h4>
+
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Display Name:</strong> @Model.DisplayName</p>
+            <p><strong>ELO:</strong> @Model.ELO</p>
+            <p><strong>Bio:</strong> @Model.Bio</p>
+        </div>
+    </div><br/>
+
+    <div class="mt-3">
+        <a asp-action="EditProfile" class="btn btn-primary">Edit Profile</a>
+    </div>
+</div>
